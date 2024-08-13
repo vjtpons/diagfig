@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "diagfig"
+description = "Helpers to check if a figure is black and white and colourblind-friendly"
+readme = "README.md"
+authors = [
+    { name = "Vincent Pons", email = "vincent.pons16@gmail.com" }
+]
+requires-python = ">=3.10"
+keywords = ["colourblind", "black_and_white", "figure", "scientific_publication"]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 1 - Planning",
+    "Natural Language :: English",
+    "Intended Audience :: Science/Research",
+]
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "pillow"
+] # typing, importlib and pathlib are standards not to be installed via pypi
+dynamic = ["version"]
+
+[tool.setuptools.package-data]
+"diagfig.data" = ["*.png"]
+# mypkg = ["*.txt"]
+
+[tool.setuptools.dynamic]
+version = { attr = "diagfig.__version__" }
