@@ -16,13 +16,15 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
-from diagfig.helpers import (figure_to_rgba_array,
-                             rgb2gray_digital,
-                             rgb2gray_human_eye,
-                             simulate_colorblindness)
+from diagfig.utils import (figure_to_rgba_array,
+                           rgb2gray_digital,
+                           rgb2gray_human_eye,
+                           simulate_colorblindness)
+
+from diagfig.colour_config import ColorConfig, IXORA, VIENOT, RUMINSKI
 
 
-def diagnose_figure(figure, aspect = None) -> mpl.figure.Figure:
+def diagnose_figure(figure, config: ColorConfig = IXORA, aspect = None) -> mpl.figure.Figure:
     """
     Diagnose the given figure for color blindness and display it in various color spaces.
     
@@ -64,9 +66,9 @@ def diagnose_figure(figure, aspect = None) -> mpl.figure.Figure:
     # Convert the input figure to grayscale and simulate color blindness in various color spaces.
     fig_gray_human = rgb2gray_human_eye(fig_rgba)
     fig_gray_digital = rgb2gray_digital(fig_rgba)
-    fig_protanopia = simulate_colorblindness(fig_rgba[:,:,:-1], "p")
-    fig_deuteranopia = simulate_colorblindness(fig_rgba[:,:,:-1], "d")
-    fig_tritanopia = simulate_colorblindness(fig_rgba[:,:,:-1], "t")
+    fig_protanopia = simulate_colorblindness(fig_rgba[:,:,:-1], "p", config = config)
+    fig_deuteranopia = simulate_colorblindness(fig_rgba[:,:,:-1], "d", config = config)
+    fig_tritanopia = simulate_colorblindness(fig_rgba[:,:,:-1], "t", config = config)
     
     # Create a 3x2 subplot grid to display the original and diagnosed figures.
     fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(12, 9), layout="constrained",
@@ -89,6 +91,7 @@ def diagnose_figure(figure, aspect = None) -> mpl.figure.Figure:
         axi.axis('off')
 
     return fig
+
 
 def diag_it(func: Callable[..., plt.Figure]) -> Callable[..., None]:
     """
@@ -136,16 +139,16 @@ class FigureDiag(Figure):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
     
-    def diag(self) -> None:
+    def diag(self, config: ColorConfig = IXORA, aspect = None) -> None:
         """
         Produces the original figure and several diagnostic versions of it.
         """
-        diagnose_figure(self)
+        diagnose_figure(self, config=config, aspect=aspect)
 
 resources_path = importlib.resources.files("diagfig.data")
 list_resources = { path.name.rsplit(".")[0]: path for path in resources_path.iterdir()}
-def demo(key: str = None):
+def demo(key: str = None, config = IXORA):
     if key == "color_space":
-        diagnose_figure(list_resources["color_space"], aspect="auto")
+        diagnose_figure(list_resources["color_space"], config=config, aspect="auto")
     else:
-        diagnose_figure(list_resources["example"])
+        diagnose_figure(list_resources["example"], config=config)

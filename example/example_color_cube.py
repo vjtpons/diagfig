@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import diagfig
-from diagfig.helpers import (figure_to_rgba_array,
+from diagfig.utils import (figure_to_rgba_array,
                              rgb2gray_digital,
                              rgb2gray_human_eye,
                              simulate_colorblindness, 
@@ -19,7 +19,9 @@ from diagfig.helpers import (figure_to_rgba_array,
                              lms_to_rgb,
                              get_palette)
 diagfig.demo()
-diagfig.demo("color_space")
+diagfig.demo("color_space", diagfig.IXORA)
+diagfig.demo("color_space", diagfig.VIENOT)
+diagfig.demo("color_space", diagfig.RUMINSKI)
 #%%
 
 rgb = []

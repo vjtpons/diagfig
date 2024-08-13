@@ -10,6 +10,7 @@ This example shows how to use the subclass for matplotlib `Figure` developped fo
 import numpy as np
 import matplotlib.pyplot as plt
 from diagfig import FigureDiag
+import diagfig
 
 # creating a dummy figure in matplotlib using the custom subclass of matplotli.figure.Figure
 fig, ax = plt.subplots(FigureClass=FigureDiag, layout = "constrained")
@@ -21,4 +22,4 @@ ax.fill_between(x, y_low, y_high, color = "tab:blue", alpha = .5)
 ax.plot(x, y, color = "tab:red", lw = 2,ls = "--")
 
 # diagnosing the figure
-diaged_fig = fig.diag()
+diaged_fig = fig.diag(config = diagfig.IXORA)

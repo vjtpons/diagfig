@@ -20,4 +20,6 @@ ax.fill_between(x, y_low, y_high, color = "tab:blue", alpha = .5)
 ax.plot(x, y, color = "tab:red", lw = 2,ls = "--")
 
 # diagnosing the figure
-fig_diag = diagfig.diagnose_figure(fig, aspect = "auto")
+fig_diag = diagfig.diagnose_figure(fig, config=diagfig.IXORA, aspect="auto")
+fig_diag = diagfig.diagnose_figure(fig, config=diagfig.VIENOT, aspect="auto")
+fig_diag = diagfig.diagnose_figure(fig, config=diagfig.RUMINSKI, aspect="auto")
