@@ -24,6 +24,7 @@ The main options are:
 - `diagfig.diag_it`: a decorator automatically generating a diagnosed figure.
 - `difagfig.FigureDiag`: a subclass of `matpotlib.figure.Figure` with an additional `diag` method returning a diagnised figure.
 
+Use of the main function `diagnose_figure`:
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,7 +43,7 @@ ax.plot(x, y, color="tab:red", lw=2, ls="--")
 fig_diag = diagfig.diagnose_figure(fig)
 ```
 
-A decorator `@diag_it` is also available in `diagfig`.
+Use of the decorator `@diag_it`:
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -64,8 +65,7 @@ def simple_plot()-> plt.Figure:
 simple_plot()
 ```
 
-It is also possible to initiate `matplotlib` figures with the custom subclass `FigureDiag`
-
+Use of the `matplotlib.figure.Figure` custom subclass `FigureDiag`:
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
