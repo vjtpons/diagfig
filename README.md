@@ -85,7 +85,7 @@ diaged_fig = fig.diag()
 ```
 ### Output generated:
 
-![ExampleUse](example/example_use.png)
+![ExampleUse](https://github.com/vjtpons/diagfig/blob/main/example/example_use.png)
 
 ## References
 1. Lee, J., & Santos, W. P. dos. (2011). An Adaptive Fuzzy-Based System to Simulate, Quantify and Compensate Color Blindness. Integrated Computer-Aided Engineering, 18(1), 29–40. https://doi.org/10.3233/ICA-2011-0356
