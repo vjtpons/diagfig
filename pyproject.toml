@@ -34,3 +34,6 @@ dynamic = ["version"]
 
 [tool.setuptools.dynamic]
 version = { attr = "diagfig.__version__" }
+
+[project.urls]
+homepage = "https://github.com/vjtpons/diagfig"

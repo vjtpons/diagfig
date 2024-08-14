@@ -16,14 +16,14 @@ def figure_to_rgba_array(fig: mpl.figure.Figure, draw: bool = True) -> npt.NDArr
     
     Parameters
     ----------
-    fig : matplotlib.figure.Figure
+    fig : mpl.figure.Figure
         The figure to convert to an RGBA numpy array.
     draw : bool, optional
         Whether to draw the figure canvas before converting, by default True.
     
     Returns
     -------
-    numpy.ndarray
+    np.ndarray
         The RGBA numpy array representing the figure.
     
     Examples
@@ -35,6 +35,7 @@ def figure_to_rgba_array(fig: mpl.figure.Figure, draw: bool = True) -> npt.NDArr
     """
     if draw:
         fig.canvas.draw()
+
     rgba_buffer = fig.canvas.buffer_rgba()
     (width, height) = fig.canvas.get_width_height()
     rgba_array = np.frombuffer(rgba_buffer, dtype=np.uint8).reshape((height, width, 4))
@@ -47,12 +48,12 @@ def rgb2gray_human_eye(rgb: npt.NDArray) -> npt.NDArray:
     
     Parameters
     ----------
-    rgb : numpy.ndarray
+    rgb : np.ndarray
         A 3-dimensional numpy array representing an RGB image.
         
     Returns
     -------
-    numpy.ndarray
+    np.ndarray
         A 2-dimensional numpy array representing the grayscale image.
         
     Examples
@@ -74,16 +75,17 @@ def rgb2gray_human_eye(rgb: npt.NDArray) -> npt.NDArray:
 
 def rgb2gray_digital(rgb: npt.NDArray) -> npt.NDArray:
     """
-    Take a rgb array as argument and return an array adjusted to digital vision in black and white.
+    Take a rgb array as argument and return an array adjusted to digital vision in 
+    black and white.
     
     Parameters
     ----------
-    rgb : numpy.ndarray
+    rgb : np.ndarray
         A numpy array representing an RGB image.
     
     Returns
     -------
-    numpy.ndarray
+    np.ndarray
         A grayscale numpy array.
     
     Examples
@@ -100,18 +102,22 @@ def rgb2gray_digital(rgb: npt.NDArray) -> npt.NDArray:
 
 def rgb_to_lms(rgb: npt.NDArray, config: ColorConfig = IXORA) -> npt.NDArray:
     """
-    Convert from RGB array to LMS array.
-    
+    Convert an RGB image array to an LMS (Long, Medium, Short) color space array.
+
     Parameters
     ----------
-    rgb : numpy.ndarray
-        A numpy array of shape (height, width, 3) where the last dimension represents RGB color channels.
-        
+    rgb : np.ndarray
+        A numpy array of shape (height, width, 3) representing the RGB color channels.
+    config : ColorConfig, optional
+        Configuration object providing the necessary color transformation matrices:
+            - RGB to LMS conversion matrix,
+        by default IXORA
+
     Returns
     -------
-    numpy.ndarray
-        A numpy array of shape (height, width, 3) where the last dimension represents LMS color channels.
-    
+    np.ndarray
+        A numpy array of shape (height, width, 3) representing the LMS color channels.
+
     Examples
     --------
     >>> fig, ax = plt.subplots()
@@ -126,21 +132,24 @@ def rgb_to_lms(rgb: npt.NDArray, config: ColorConfig = IXORA) -> npt.NDArray:
 
 def lms_to_rgb(lms: npt.NDArray, config: ColorConfig = IXORA) -> npt.NDArray:
     """
-    Convert from LMS array to RGB array.
-    
+    Convert an LMS (Long, Medium, Short) color space array back to an RGB array.
+
     Parameters
     ----------
-    lms : numpy.ndarray
-        A numpy array of shape (height, width, 3) where the last dimension represents LMS color channels.
-    
+    lms : np.ndarray
+        A numpy array of shape (height, width, 3) representing the LMS color channels.
+    config : ColorConfig, optional
+        Configuration object providing the necessary color transformation matrices:
+            - LMS to RGB conversion matrix,
+        by default IXORA.
+
     Returns
     -------
-    numpy.ndarray
-        A numpy array of shape (height, width, 3) where the last dimension represents RGB color channels.
-    
+    np.ndarray
+        A numpy array of shape (height, width, 3) representing the RGB color channels.
+
     Examples
     --------
-    
     >>> fig, ax = plt.subplots()
     >>> ax.plot(np.arange(10))
     >>> rgba_fig = plt2arr(fig)
@@ -155,28 +164,38 @@ def lms_to_rgb(lms: npt.NDArray, config: ColorConfig = IXORA) -> npt.NDArray:
 def simulate_colorblindness(rgb: npt.NDArray, colorblind_type: str,
                             config: ColorConfig = IXORA) -> npt.NDArray:
     """
-    Simulate colorblindness by transforming an RGB image into a new RGB image that is adjusted for the specified
-    type of colorblindness. The transformation is based on a simulation matrix that is specific to the type of
-    colorblindness.
-
+    Simulate the effects of colorblindness on an RGB image by adjusting it according 
+    to a specific type of colorblindness. The transformation is based on a simulation 
+    matrix that is specific to the type of colorblindness.
+    
     Parameters
     ----------
-    rgb : npt.NDArray
-        An array representing an RGB image, with shape (height, width, 3).
+    rgb : np.ndarray
+        A numpy array representing an RGB image, with shape (height, width, 3).
     colorblind_type : str
-        A string indicating the type of colorblindness to simulate. Can be 'protanopia', 'p', 'pro' for protanopia,
-        'deuteranopia', 'd', 'deut' for deuteranopia, or 'tritanopia', 't', 'tri' for tritanopia.
-
+        The type of colorblindness to simulate. Can be one of the following:
+        - 'protanopia', 'p', 'pro' for protanopia
+        - 'deuteranopia', 'd', 'deut' for deuteranopia
+        - 'tritanopia', 't', 'tri' for tritanopia
+    config : ColorConfig, optional
+        Configuration object providing the necessary color transformation matrices:
+            - RGB to LMS conversion matrix,
+            - LMS to RGB conversion matrix,
+            - protanopia conversion matrix,
+            - deuteranopia conversion matrix,
+            - tritanopia conversion matrix,
+        by default IXORA.
+    
     Returns
     -------
-    npt.NDArray
-        An array representing the simulated RGB image, with shape (height, width, 3).
-
+    np.ndarray
+        A numpy array representing the simulated RGB image, with shape (height, width, 3).
+    
     Raises
     ------
     ValueError
         If `colorblind_type` is not recognized.
-
+    
     Examples
     --------
     >>> fig, ax = plt.subplots()
@@ -184,7 +203,6 @@ def simulate_colorblindness(rgb: npt.NDArray, colorblind_type: str,
     >>> rgba_fig = plt2arr(fig)
     >>> fig_colorblind = simulate_colorblindness(rgba_fig[:,:,:-1], 'd')
     """
-
     # convert RGB image to LMS color space
     lms_img = rgb_to_lms(rgb, config = config)
 
@@ -204,14 +222,40 @@ def simulate_colorblindness(rgb: npt.NDArray, colorblind_type: str,
     # convert back to RGB color space
     rgb_img = lms_to_rgb(lms_img, config = config)
     rgb_img = np.clip(rgb_img, 0.0, 1.0)
-    return rgb_img#.astype(np.uint8)
+    return rgb_img
 
 
 def hsv_to_rgb_vec(hsv):
     """
-    Vectorized conversion from hsv to rgb.
-    Code taken online to not increase number of dependencies.
-    It is a vectorized version of the colosys code.
+    Convert an HSV image array to an RGB image array using a vectorized approach.
+    
+    This function performs a vectorized conversion of an HSV (Hue, Saturation, Value) 
+    image to an RGB (Red, Green, Blue) image. The method is based on the algorithm 
+    used in the standard `colorsys` module optimized to handle large arrays.
+    See references for original code.
+
+    Parameters
+    ----------
+    hsv : np.ndarray
+        A numpy array of shape (..., 3), where the last dimension represents the HSV 
+        color channels.
+
+    Returns
+    -------
+    np.ndarray
+        A numpy array of shape (..., 3) where the last dimension represents the RGB 
+        color channels.
+
+    Examples
+    --------
+    >>> hsv_image = np.array([[[0.5, 0.5, 0.5], [0.7, 0.8, 0.9]]])
+    >>> rgb_image = hsv_to_rgb_vec(hsv_image)
+    
+    References
+    ----------
+    Numpy RGB to HSV. Gist. Retrieved 14 August 2024, 
+    from https://gist.github.com/PolarNick239/691387158ff1c41ad73c
+
     """
     input_shape = hsv.shape
     hsv = hsv.reshape(-1, 3)
@@ -237,7 +281,31 @@ def hsv_to_rgb_vec(hsv):
 
 
 def get_palette(val: float = 1., n: int = 100, show: bool = False):
-    """Show a color palette."""
+    """
+    Generate and optionally display an HSV color palette in RGB format.
+
+    Parameters
+    ----------
+    val : float, optional
+        The value (brightness) component of the HSV color space, by default 1.0.
+    n : int, optional
+        The size of the palette, defining both the width and height of the generated 
+        image grid, by default 100.
+    show : bool, optional
+        If True, displays the generated palette using matplotlib, by default False.
+
+    Returns
+    -------
+    np.ndarray
+        A numpy array of shape (n, n, 3) representing the RGB color channels of the 
+        generated palette.
+
+    Examples
+    --------
+    >>> palette = get_palette(val=0.8, n=200, show=True)
+    >>> print(palette.shape)
+    (200, 200, 3)
+    """
     xx = np.linspace(0,1,n)
     yy = np.linspace(0,1,n)
     X,Y = np.meshgrid(xx, yy)
@@ -255,3 +323,4 @@ def get_palette(val: float = 1., n: int = 100, show: bool = False):
         ax.imshow(rgb, aspect = "auto")
         ax.axis("off")
     return rgb
+
