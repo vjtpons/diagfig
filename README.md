@@ -16,13 +16,13 @@ pip install diagfig
 ```
 
 ## Examples of use
-There are a few options for using `diagfig`.
+There are a few options for using `diagfig`. They are meant to help you to diagnose if a figure require color / quality adjustment before publication.
 It can be used to simulate colorblindness on your figure as well as black and white.
 You can also play with the dpi to combine effect of colorbliness and poor export quality.
 The main options are:
 - `diagfig.diagnose_figure`: a function taking a figure as argument and returning a diagnosed figure.
 - `diagfig.diag_it`: a decorator automatically generating a diagnosed figure.
-- `difagfig.FigureDiag`: a subclass of `matpotlib.figure.Figure` with an additional `diag` method returning a diagnised figure.
+- `diagfig.FigureDiag`: a subclass of `matpotlib.figure.Figure` with an additional `diag` method returning a "diagnosed" figure.
 
 Use of the main function `diagnose_figure`:
 ```python
