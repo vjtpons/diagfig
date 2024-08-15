@@ -3,5 +3,5 @@ from diagfig.figure_diagnosis import (diagnose_figure,
                                       FigureDiag,
                                       demo)
 from diagfig.colour_config import IXORA, VIENOT, RUMINSKI
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
